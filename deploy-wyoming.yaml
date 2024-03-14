@@ -2,6 +2,23 @@
 - name: Download Dependencies and set up satellite
   hosts: all
   tasks:
+    - name: Check Swapfile meets size target
+      become: true
+      ansible.builtin.shell:
+        cmd: "grep -q '^CONF_SWAPSIZE={{ desired_swap_size }}$' /etc/dphys-swapfile || echo 'not_found'"
+      register: swapsize_check
+      changed_when: false
+    - name: "Resize swap to {{ desired_swap_size }}"
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/dphys-swapfile
+        regexp: '^CONF_SWAPSIZE='
+        line: 'CONF_SWAPSIZE={{ desired_swap_size }}'
+      when: swapsize_check.stdout == "not_found"
+    - name: Reboot if the line was replaced
+      become: true
+      ansible.builtin.reboot:
+      when: swapsize_check.stdout == "not_found"
 #    - name: Install OS Deps
 #      become: true
 #      apt:
@@ -36,8 +53,45 @@
 #      become: true
 #      ansible.builtin.reboot:
 #      when: not seeed_voicecard_check.stat.exists
-    - name: Install pip requirements
+#    - name: Create virtual environment
+#      ansible.builtin.command:
+#        cmd: python3 -m venv ~/wyoming-satellite/.venv
+#      args:
+#        creates: ~/wyoming-satellite/.venv
+#    - name: Update pip
+#      pip:
+#        virtualenv: ~/wyoming-satellite/.venv
+#        extra_args: --upgrade
+#        virtualenv_python: python3
+#        name: pip
+#    - name: Update wheel & setuptools
+#      pip:
+#        virtualenv: ~/wyoming-satellite/.venv
+#        extra_args: --upgrade
+#        virtualenv_python: python3
+#        name: "{{ item }}"
+#      loop:
+#        - wheel
+#        - setuptools
+    - name: Install Requirements
       pip:
-        requirements: ~/wyoming-satellite/requirements.txt
         virtualenv: ~/wyoming-satellite/.venv
         virtualenv_python: python3
+        name: "{{ item }}"
+      loop:
+        - wyoming==1.5.3
+        - zeroconf==0.131.0
+        - pyring-buffer==1.0.0
+        - webrtc-noise-gain==1.2.3
+        - pysilero-vad==1.0.0
+
+
+#    - name: Install pip requirements
+#      pip:
+#        requirements: "{{ item }}"
+#        virtualenv: ~/wyoming-satellite/.venv
+#        virtualenv_python: python3
+#      loop:
+#        - ~/wyoming-satellite/requirements.txt
+#        - ~/wyoming-satellite/requirements_audio_enhancement.txt
+#        - ~/wyoming-satellite/requirements_vad.txt
