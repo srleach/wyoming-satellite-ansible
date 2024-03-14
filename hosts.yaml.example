@@ -1,0 +1,7 @@
+satellites:
+  hosts:
+    ip_or_hostname:
+      ansible_user: your_user
+      ansible_ssh_private_key_file: path_to_key
+      satellite_name: Name_Of_Satellite
+      desired_swap_size: 2048
