@@ -1,18 +1,43 @@
 ---
-- name: Deploy project to Raspberry Pi
+- name: Download Dependencies and set up satellite
   hosts: all
   tasks:
-    - name: Install dependencies
-      become: true
-      apt:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - python3
-        - python3-pip
-        - git
-    - name: Clone Wyoming Satellite
-      ansible.builtin.git:
-        repo: 'https://github.com/rhasspy/wyoming-satellite.git'
-        dest: ~/wyoming-satellite
-        version: v1.2.0
+#    - name: Install OS Deps
+#      become: true
+#      apt:
+#        name: "{{ item }}"
+#        state: present
+#      loop:
+#        - python3
+#        - python3-pip
+#        - python3-venv
+#        - alsa-utils
+#        - git
+#        - curl
+#        - raspberrypi-kernel-headers
+#        - dkms
+#        - i2c-tools
+#        - libasound2-plugins
+#        - alsa-utils
+#    - name: Clone Wyoming Satellite
+#      ansible.builtin.git:
+#        repo: 'https://github.com/rhasspy/wyoming-satellite.git'
+#        dest: ~/wyoming-satellite
+#        version: v1.2.0
+#    - name: Check if the file exists
+#      ansible.builtin.stat:
+#        path: /lib/systemd/system/seeed-voicecard.service
+#      register: seeed_voicecard_check
+#    - name: Install Audio Drivers
+#      become: true
+#      script: scripts/audio-drivers-WM8960.sh
+#      when: not seeed_voicecard_check.stat.exists
+#    - name: Reboot to enable audio drivers
+#      become: true
+#      ansible.builtin.reboot:
+#      when: not seeed_voicecard_check.stat.exists
+    - name: Install pip requirements
+      pip:
+        requirements: ~/wyoming-satellite/requirements.txt
+        virtualenv: ~/wyoming-satellite/.venv
+        virtualenv_python: python3

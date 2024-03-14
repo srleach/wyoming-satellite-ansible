@@ -6,10 +6,6 @@
 
 set -eo pipefail
 
-apt-get update
-apt-get install --no-install-recommends --yes \
-    curl raspberrypi-kernel-headers dkms i2c-tools libasound2-plugins alsa-utils
-
 temp_dir="$(mktemp -d)"
 
 function finish {
