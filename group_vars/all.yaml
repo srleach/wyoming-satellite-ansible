@@ -1,6 +1,8 @@
 ---
 # Note this may need to be changed if you have a smaller SD Card. Or a bigger one...
 desired_swap_size: 2048
+# Be mindful you must use the name of a trained model
+wake_word_model: hey_jarvis
 openwakeword_tag: v1.10.0
 openwakeword_repo: https://github.com/rhasspy/wyoming-openwakeword.git
 wyoming_satellite_repo: https://github.com/rhasspy/wyoming-satellite.git

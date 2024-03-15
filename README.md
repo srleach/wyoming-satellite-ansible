@@ -4,6 +4,45 @@
 
 > The original inspiration for this came from the video produced by FutureProofHomes [on YouTube](https://www.youtube.com/watch?v=kS0agn13hhU) and also documented [here](https://github.com/FutureProofHomes/wyoming-enhancements)
 
+
+Welcome to the Wyoming Raspberry Pi Setup playbook! 
+
+This Ansible playbook simplifies the installation of Wyoming Satellite and Wyoming OpenWakeWord on your Raspberry Pi(s), 
+completing a full deployment from a base image in under 20 minutes. 
+
+Whether you're configuring one device or many, the playbook automates the process for consistency and reliability. 
+
+Please feel free to report issues, and contribute enhancements through pull requests.
+
 ## Usage
 
-Rename the hosts.yaml.example file in the inventories/ directory to hosts.yaml. This file serves as your inventory, defining your hosts and their associated variables. In hosts.yaml, replace the placeholders (ip_or_hostname, your_user, path_to_key, Name_Of_Satellite, 2048) with the actual values for your satellite hosts. The ansible_user should be the username you use to SSH into your hosts, ansible_ssh_private_key_file should be the path to the SSH private key, satellite_name can be a descriptive name for your satellite, and desired_swap_size specifies the desired swap size for your hosts. 
+### Prerequisites & Notes
+
+- Burn one or more SD Cards with Pi imager or similar. 
+  - I've tested on the "Raspberry Pi OS (Legacy, 64-bit) Lite" version released `2024-03-12` on a Pi Zero 2 W but it should work elsewhere too. 
+  - To use this play, you'll need the username and an authorised key and be able to reach the pi over ssh. More on this later.
+- Rename the `hosts.yaml.example` file in the root directory to `hosts.yaml`. For each host:
+  - Configure its IP or hostname
+  - Configure `ansible_user` and `ansible_ssh_private_key_file` to authenticate against the targets - you'll have set these up when burning your cards.
+  - Configure `satellite_name` value to something descriptive for each host. This is the name you'll see in Home Assistant. 
+    - It can be changed easily enough by re-running the play with an updated value.
+- If you'd like to adjust the wake word used by OpenWakeWord, set it in `group_vars/all.yaml`
+- Caution: I opted to use this to up the swapfile size to help speed up the initial run. 
+  - This is set in group_vars/all.yaml where you'll also find some more config.
+
+### Running
+
+```
+ ansible-playbook -i hosts.yaml playbooks/deploy-wyoming.yaml
+```
+
+## Performance
+
+> Your mileage may vary! Image written using Raspberry Pi Imager with cached image.
+
+- SD Card write (3 minutes)
+- SD Card veriy (1 minute)
+- Pi First Boot (2 minutes)
+- Play Finished (17 minutes)
+
+Please do feel free to open a PR with any suggestions.

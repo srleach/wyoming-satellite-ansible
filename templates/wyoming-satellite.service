@@ -11,7 +11,7 @@ ExecStart=/home/{{ ansible_user }}/wyoming-satellite/script/run \
     --mic-command 'arecord -D plughw:CARD=seeed2micvoicec,DEV=0 -r 16000 -c 1 -f S16_LE -t raw' \
     --snd-command 'aplay -D plughw:CARD=seeed2micvoicec,DEV=0 -r 22050 -c 1 -f S16_LE -t raw' \
     --wake-uri 'tcp://127.0.0.1:10400' \
-    --wake-word-name 'ok_nabu' \
+    --wake-word-name {{ wake_word_model }} \
     --awake-wav sounds/awake.wav \
     --done-wav sounds/done.wav \
     --mic-auto-gain 5 \
