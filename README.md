@@ -6,4 +6,4 @@
 
 ## Usage
 
-You'll first need to 
+Rename the hosts.yaml.example file in the inventories/ directory to hosts.yaml. This file serves as your inventory, defining your hosts and their associated variables. In hosts.yaml, replace the placeholders (ip_or_hostname, your_user, path_to_key, Name_Of_Satellite, 2048) with the actual values for your satellite hosts. The ansible_user should be the username you use to SSH into your hosts, ansible_ssh_private_key_file should be the path to the SSH private key, satellite_name can be a descriptive name for your satellite, and desired_swap_size specifies the desired swap size for your hosts. 

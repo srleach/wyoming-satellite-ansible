@@ -1,0 +1,10 @@
+---
+# Note this may need to be changed if you have a smaller SD Card. Or a bigger one...
+desired_swap_size: 2048
+openwakeword_tag: v1.10.0
+openwakeword_repo: https://github.com/rhasspy/wyoming-openwakeword.git
+wyoming_satellite_repo: https://github.com/rhasspy/wyoming-satellite.git
+# Warning - For some reason I opted to run the requirements install manually rather than invoking the setup script.
+# I'll probably change this to the same method used for openwakeword when it isn't past mignight. Or maybe not...
+# If you come to update the tag version of wyoming-satellite, note that you may need to update that, too.
+wyoming_satellite_tag: v1.2.0
