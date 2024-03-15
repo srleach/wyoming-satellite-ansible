@@ -44,5 +44,3 @@ Please feel free to report issues, and contribute enhancements through pull requ
 - SD Card veriy (1 minute)
 - Pi First Boot (2 minutes)
 - Play Finished (17 minutes)
-
-Please do feel free to open a PR with any suggestions.
